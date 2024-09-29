@@ -5,7 +5,7 @@ import redisClient from '../utils/redis';
 
 class AuthController {
   static getConnect(req, res) {
-    const token = req.header('Authorization');
+    const token = req.header['Authorization'];
     const encodedToken = atob(token);
     const [email, password] = encodedToken.split(':');
 
@@ -24,7 +24,7 @@ class AuthController {
   }
 
   static getDisconnect(req, res) {
-    const token = req.header('X-Token');
+    const token = req.header['X-Token'];
     const userId = redisClient.get(`auth_${token}`);
     if (!userId) {
       return res.status(401).send({ error: 'Unauthorized' });
