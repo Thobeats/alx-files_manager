@@ -26,11 +26,11 @@ class DBClient {
   }
 
   async checkUser(email) {
-    return this.db.collection('users').findOne({email: email})
+    return this.db.collection('users').findOne({ email });
   }
 
   async saveNewUser(email, password) {
-    return this.db.collection('users').insertOne({email: email, password: password});
+    return this.db.collection('users').insertOne({ email, password });
   }
 }
 
