@@ -32,6 +32,10 @@ class DBClient {
   async saveNewUser(email, password) {
     return this.db.collection('users').insertOne({ email, password });
   }
+
+  async getUser(userId) {
+    return this.db.collection('users').findOne({ _id: userId });
+  }
 }
 
 const dbClient = new DBClient();
