@@ -1,19 +1,19 @@
-import { uuidv4 } from 'uuid';
-import { atob } from 'atob';
+const { v4: uuidv4 } = require('uuid');
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 
 class AuthController {
-  static getConnect(req, res) {
-    const token = req.header['Authorization'];
-    const encodedToken = atob(token);
+  static async getConnect(req, res) {
+    const token = req.header('Authorization');
+    const encodedToken = Buffer.from(token.split(' ')[1], 'base64').toString();
+
     const [email, password] = encodedToken.split(':');
 
     if (!email || !password) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
 
-    const user = dbClient.checkUser(email);
+    const user = await dbClient.checkUser(email);
     if (!user) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
@@ -24,7 +24,7 @@ class AuthController {
   }
 
   static getDisconnect(req, res) {
-    const token = req.header['X-Token'];
+    const token = req.header('X-Token');
     const userId = redisClient.get(`auth_${token}`);
     if (!userId) {
       return res.status(401).send({ error: 'Unauthorized' });

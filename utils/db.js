@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import mongoDBCore from 'mongodb/lib/core';
 
 class DBClient {
   constructor() {
@@ -34,7 +35,7 @@ class DBClient {
   }
 
   async getUser(userId) {
-    return this.db.collection('users').findOne({ _id: userId });
+    return this.db.collection('users').findOne({ _id: new mongoDBCore.BSON.ObjectId(userId) });
   }
 }
 
