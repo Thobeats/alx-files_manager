@@ -30,6 +30,10 @@ class DBClient {
     return this.db.collection('users').findOne({ email });
   }
 
+  async authUser(email, password) {
+    return this.db.collection('users').findOne({ email, password });
+  }
+
   async saveNewUser(email, password) {
     return this.db.collection('users').insertOne({ email, password });
   }

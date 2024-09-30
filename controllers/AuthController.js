@@ -1,6 +1,8 @@
-const { v4: uuidv4 } = require('uuid');
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
+import sha1 from 'sha1';
+
+const { v4: uuidv4 } = require('uuid');
 
 class AuthController {
   static async getConnect(req, res) {
@@ -13,7 +15,7 @@ class AuthController {
       return res.status(401).send({ error: 'Unauthorized' });
     }
 
-    const user = await dbClient.checkUser(email);
+    const user = await dbClient.authUser(email, password);
     if (!user) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
