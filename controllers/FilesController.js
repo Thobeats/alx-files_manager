@@ -33,7 +33,16 @@ class FilesController {
     }
     delete newFile.data;
     const savedFile = await dbClient.saveFile(newFile);
-    return res.status(200).send(savedFile.ops[0]);
+    const result = {
+      id: savedFile.ops[0]._id,
+      userId: savedFile.ops[0].userId,
+      name: savedFile.ops[0].name,
+      type: savedFile.ops[0].type,
+      isPublic: savedFile.ops[0].isPublic,
+      parentId: savedFile.ops[0].parentId,
+    };
+
+    return res.status(200).send(result);
   }
 
   static async getShow(req, res) {
