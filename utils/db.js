@@ -8,7 +8,7 @@ class DBClient {
     const db = process.env.DB_DATABASE || 'files_manager';
     const url = `mongodb://${host}:${port}/`;
 
-    this.client = new MongoClient(url);
+    this.client = new MongoClient(url, { useUnifiedTopology: true });
     this.client.connect().then(() => {
       this.db = this.client.db(db);
     });
@@ -40,6 +40,14 @@ class DBClient {
 
   async getUser(userId) {
     return this.db.collection('users').findOne({ _id: new mongoDBCore.BSON.ObjectId(userId) });
+  }
+
+  async getFile(fileId) {
+    return this.db.collection('files').findOne({ _id: new mongoDBCore.BSON.ObjectId(fileId) });
+  }
+
+  async saveFile(fileData) {
+    return this.db.collection('files').insertOne(fileData);
   }
 }
 

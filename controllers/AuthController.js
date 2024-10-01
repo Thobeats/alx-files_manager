@@ -1,21 +1,23 @@
+import sha1 from 'sha1';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
-import sha1 from 'sha1';
 
 const { v4: uuidv4 } = require('uuid');
 
 class AuthController {
   static async getConnect(req, res) {
     const token = req.header('Authorization');
+    if (!token || !token.startsWith('Basic ')) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
     const encodedToken = Buffer.from(token.split(' ')[1], 'base64').toString();
-
     const [email, password] = encodedToken.split(':');
 
     if (!email || !password) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
 
-    const user = await dbClient.authUser(email, password);
+    const user = await dbClient.authUser(email, sha1(password));
     if (!user) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
