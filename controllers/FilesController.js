@@ -38,13 +38,15 @@ class FilesController {
 
   static async getShow(req, res) {
     const { id } = req.params;
-    const userId = req.customData.userId;
+    const { userId } = req.customData;
     const file = await dbClient.getUserFile(id, userId);
     return res.status(200).send(file);
   }
 
-  static getIndex(req, res) {
-    return res.status(200).send({ error: 'Not implemented' });
+  static async getIndex(req, res) {
+    const { parentId, page } = req.query;
+    const files = await dbClient.getParentFiles(parentId, page);
+    return res.status(200).send(files);
   }
 }
 

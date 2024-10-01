@@ -16,7 +16,6 @@ const getRoute = (app, router) => {
   router.get('/files/:id', multipart(), FilesController.getShow);
   router.get('/files', multipart(), FilesController.getIndex);
 
-
   app.use('', router);
 };
 
