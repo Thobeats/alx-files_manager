@@ -13,6 +13,9 @@ const getRoute = (app, router) => {
   app.get('/disconnect', AuthController.getDisconnect);
 
   router.post('/files', multipart(), FilesController.postUpload);
+  router.get('/files/:id', multipart(), FilesController.getShow);
+  router.get('/files', multipart(), FilesController.getIndex);
+
 
   app.use('', router);
 };

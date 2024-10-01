@@ -15,7 +15,7 @@ class FilesController {
     }
     if (!file.data && file.type !== 'folder') return res.status(400).send({ error: 'Missing data' });
     if (file.parentId) {
-      const parent = dbClient.getFile(file.parentId);
+      const parent = await dbClient.getFile(file.parentId);
       if (!parent) return res.status(400).send({ error: 'Parent not found' });
       if (parent.type !== 'folder') return res.status(400).send({ error: 'Parent is not a folder' });
     } else {
@@ -31,8 +31,20 @@ class FilesController {
     if (file.type !== 'folder') {
       newFile.localPath = fylClient.saveFile(file.data);
     }
+    delete newFile.data;
     const savedFile = await dbClient.saveFile(newFile);
     return res.status(200).send(savedFile.ops[0]);
+  }
+
+  static async getShow(req, res) {
+    const { id } = req.params;
+    const userId = req.customData.userId;
+    const file = await dbClient.getUserFile(id, userId);
+    return res.status(200).send(file);
+  }
+
+  static getIndex(req, res) {
+    return res.status(200).send({ error: 'Not implemented' });
   }
 }
 

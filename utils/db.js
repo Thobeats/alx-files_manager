@@ -49,6 +49,10 @@ class DBClient {
   async saveFile(fileData) {
     return this.db.collection('files').insertOne(fileData);
   }
+
+  async getUserFile(fileId, userId) {
+    return this.db.collection('files').findOne({ _id: new mongoDBCore.BSON.ObjectId(fileId), userId: userId });
+  }
 }
 
 const dbClient = new DBClient();
