@@ -1,6 +1,5 @@
 import sha1 from 'sha1';
 import dbClient from '../utils/db';
-import Middleware from '../lib/middlewares';
 
 class UserController {
   static async postNew(req, res) {
