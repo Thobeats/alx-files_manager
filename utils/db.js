@@ -57,7 +57,7 @@ class DBClient {
   async getParentFiles(parentId, page, limit = 20) {
     //  return this.db.collection('files').find({ parentId: parentId }).limit(limit).toArray();
     return this.db.collection('files').aggregate([
-      { $match: { parentId: parentId === 0 ? 0 : parentId } },
+      { $match: { parentId: parentId === "0" ? 0 : parentId } },
       { $skip: limit * (page) },
       { $limit: limit },
     ]).toArray();

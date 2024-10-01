@@ -1,5 +1,5 @@
 import getRoute from './routes';
-import Middleware from './utils/middlewares';
+import Middleware from './lib/middlewares';
 
 const express = require('express');
 

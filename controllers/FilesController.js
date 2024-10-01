@@ -1,5 +1,5 @@
 import dbClient from '../utils/db';
-import fylClient from '../utils/fyl';
+import fylClient from '../lib/fyl';
 
 class FilesController {
   static async postUpload(req, res) {
