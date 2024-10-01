@@ -1,5 +1,6 @@
 import sha1 from 'sha1';
 import dbClient from '../utils/db';
+import Middleware from '../lib/middlewares';
 
 class UserController {
   static async postNew(req, res) {
@@ -20,6 +21,7 @@ class UserController {
   }
 
   static async getMe(req, res) {
+    Middleware.authMiddleware(req, res);
     const user = await dbClient.getUser(req.customData.userId);
     return res.status(200).send({ id: user._id, email: user.email });
   }
