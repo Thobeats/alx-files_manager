@@ -42,7 +42,7 @@ class FilesController {
       parentId: savedFile.ops[0].parentId,
     };
 
-    return res.status(200).send(result);
+    return res.status(201).send(result);
   }
 
   static async getShow(req, res) {
