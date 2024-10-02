@@ -8,7 +8,7 @@ const getRoute = (app, router) => {
   app.get('/stats', AppController.getStats);
   app.post('/users', UsersController.postNew);
   app.get('/connect', AuthController.getConnect);
-  app.get('/disconnect', AuthController.getDisconnect);
+  router.get('/disconnect', AuthController.getDisconnect);
   router.get('/users/me', UsersController.getMe);
   router.post('/files', FilesController.postUpload);
   router.get('/files/:id', FilesController.getShow);
