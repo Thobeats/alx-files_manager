@@ -55,12 +55,19 @@ class DBClient {
   }
 
   async getParentFiles(parentId, page, limit = 20) {
-    //  return this.db.collection('files').find({ parentId: parentId }).limit(limit).toArray();
     return this.db.collection('files').aggregate([
       { $match: { parentId: parentId === '0' ? 0 : parentId } },
       { $skip: limit * (page) },
       { $limit: limit },
     ]).toArray();
+  }
+
+  async publishFile(fileId) {
+    return this.db.collection('files').updateOne({ _id: new mongoDBCore.BSON.ObjectId(fileId) }, { $set: { isPublic: true } });
+  }
+
+  async unpublishFile(fileId) {
+    return this.db.collection('files').updateOne({ _id: new mongoDBCore.BSON.ObjectId(fileId) }, { $set: { isPublic: false } });
   }
 }
 

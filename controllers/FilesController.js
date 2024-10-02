@@ -79,11 +79,40 @@ class FilesController {
     const file = await dbClient.getUserFile(id, userId);
     if (!file) return res.status(404).send({ error: 'Not found' });
     await dbClient.publishFile(id);
+    const updatedFile = await dbClient.getUserFile(id, userId);
     const result = {
-      id, userId, name: file.name, type: file.type, isPublic: true, parentId: file.parentId,
+      id,
+      userId,
+      name: updatedFile.name,
+      type: updatedFile.type,
+      isPublic: updatedFile.isPublic,
+      parentId: updatedFile.parentId,
     };
+
     if (file.type !== 'folder') {
-      result.localPath = file.localPath;
+      result.localPath = updatedFile.localPath;
+    }
+    return res.status(200).send(result);
+  }
+
+  static async putUnpublish(req, res) {
+    const { id } = req.params;
+    const { userId } = req.customData;
+    const file = await dbClient.getUserFile(id, userId);
+    if (!file) return res.status(404).send({ error: 'Not found' });
+    await dbClient.unpublishFile(id);
+    const updatedFile = await dbClient.getUserFile(id, userId);
+    const result = {
+      id,
+      userId,
+      name: updatedFile.name,
+      type: updatedFile.type,
+      isPublic: updatedFile.isPublic,
+      parentId: updatedFile.parentId,
+    };
+
+    if (file.type !== 'folder') {
+      result.localPath = updatedFile.localPath;
     }
     return res.status(200).send(result);
   }

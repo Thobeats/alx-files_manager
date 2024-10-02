@@ -14,6 +14,7 @@ const getRoute = (app, router) => {
   router.get('/files/:id', FilesController.getShow);
   router.get('/files', FilesController.getIndex);
   router.put('/files/:id/publish', FilesController.putPublish);
+  router.put('/files/:id/unpublish', FilesController.putUnpublish);
 };
 
 export default getRoute;
