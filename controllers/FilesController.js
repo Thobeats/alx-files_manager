@@ -23,15 +23,17 @@ class FilesController {
     }
 
     file.isPublic = file.isPublic || false;
-
     const newFile = {
-      ...file,
       userId: req.customData.userId,
+      name: file.name,
+      type: file.type,
+      isPublic: file.isPublic,
+      parentId: file.parentId
     };
     if (file.type !== 'folder') {
       newFile.localPath = fylClient.saveFile(file.data);
     }
-    delete newFile.data;
+
     const savedFile = await dbClient.saveFile(newFile);
     const result = {
       id: savedFile.ops[0]._id,
