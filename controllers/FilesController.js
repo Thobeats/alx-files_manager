@@ -53,13 +53,39 @@ class FilesController {
     const { userId } = req.customData;
     const file = await dbClient.getUserFile(id, userId);
     if (!file) return res.status(404).send({ error: 'Not found' });
-    return res.status(200).send(file);
+    const result = {
+      id: file._id,
+      userId: file.userId,
+      name: file.name,
+      type: file.type,
+      isPublic: file.isPublic,
+      parentId: file.parentId,
+    };
+    if (file.type !== 'folder') {
+      result.localPath = file.localPath;
+    }
+    return res.status(200).send(result);
   }
 
   static async getIndex(req, res) {
     const { parentId, page } = req.query;
     const files = await dbClient.getParentFiles(parentId, page);
     return res.status(200).send(files);
+  }
+
+  static async putPublish(req, res) {
+    const { id } = req.params;
+    const { userId } = req.customData;
+    const file = await dbClient.getUserFile(id, userId);
+    if (!file) return res.status(404).send({ error: 'Not found' });
+    await dbClient.publishFile(id);
+    const result = {
+      id, userId, name: file.name, type: file.type, isPublic: true, parentId: file.parentId,
+    };
+    if (file.type !== 'folder') {
+      result.localPath = file.localPath;
+    }
+    return res.status(200).send(result);
   }
 }
 
