@@ -126,7 +126,7 @@ class FilesController {
     if (file.type === 'folder') return res.status(400).send({ error: 'A folder doesn\'t have content' });
     const result = fylClient.getFile(file.localPath, file.name);
     if (!result.data) return res.status(404).send({ error: 'Not found' });
-    return res.status(200).send(result);
+    return res.status(200).send(result.data);
   }
 }
 
