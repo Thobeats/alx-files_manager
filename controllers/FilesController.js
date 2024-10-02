@@ -116,6 +116,18 @@ class FilesController {
     }
     return res.status(200).send(result);
   }
+
+  static async getFile(req, res) {
+    const { id } = req.params;
+    const { userId } = req.customData;
+    const file = await dbClient.getUserFile(id, userId);
+    if (!file) return res.status(404).send({ error: 'Not found' });
+    if (!file.isPublic) return res.status(404).send({ error: 'Not found' });
+    if (file.type === 'folder') return res.status(400).send({ error: 'A folder doesn\'t have content' });
+    const result = fylClient.getFile(file.localPath, file.name);
+    if (!result.data) return res.status(404).send({ error: 'Not found' });
+    return res.status(200).send(result);
+  }
 }
 
 export default FilesController;
