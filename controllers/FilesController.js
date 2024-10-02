@@ -28,8 +28,9 @@ class FilesController {
       name: file.name,
       type: file.type,
       isPublic: file.isPublic,
-      parentId: file.parentId
+      parentId: file.parentId,
     };
+
     if (file.type !== 'folder') {
       newFile.localPath = fylClient.saveFile(file.data);
     }
