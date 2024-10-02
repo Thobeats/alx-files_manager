@@ -52,6 +52,7 @@ class FilesController {
     const { id } = req.params;
     const { userId } = req.customData;
     const file = await dbClient.getUserFile(id, userId);
+    if (!file) return res.status(404).send({ error: 'Not found' });
     return res.status(200).send(file);
   }
 
