@@ -68,9 +68,19 @@ class FilesController {
   }
 
   static async getIndex(req, res) {
-    const { parentId, page } = req.query;
+    let { parentId, page } = req.query;
+    if (page.isNan() || page === undefined || page < 0) page = 0;
+    if (!parentId) parentId = '0';
     const files = await dbClient.getParentFiles(parentId, page);
-    return res.status(200).send(files);
+    const result = files.map((file) => ({
+      id: file._id,
+      userId: file.userId,
+      name: file.name,
+      type: file.type,
+      isPublic: file.isPublic,
+      parentId: file.parentId,
+    }));
+    return res.status(200).send(result);
   }
 
   static async putPublish(req, res) {
