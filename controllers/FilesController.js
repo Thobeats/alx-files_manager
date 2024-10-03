@@ -69,7 +69,7 @@ class FilesController {
 
   static async getIndex(req, res) {
     let { parentId, page } = req.query;
-    if (page.isNan() || page === undefined || page < 0) page = 0;
+    if (page === undefined || page < 0) page = 0;
     if (!parentId) parentId = '0';
     const files = await dbClient.getParentFiles(parentId, page);
     const result = files.map((file) => ({
