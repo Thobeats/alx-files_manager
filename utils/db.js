@@ -51,7 +51,10 @@ class DBClient {
   }
 
   async getUserFile(fileId, userId) {
-    return this.db.collection('files').findOne({ _id: new mongoDBCore.BSON.ObjectId(fileId), userId });
+    return this.db.collection('files').findOne({
+      _id: new mongoDBCore.BSON.ObjectId(fileId),
+      userId: new mongoDBCore.BSON.ObjectId(userId),
+    });
   }
 
   async getParentFiles(parentId, page, limit = 20) {
